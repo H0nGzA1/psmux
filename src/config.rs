@@ -356,7 +356,8 @@ pub fn parse_config_line(app: &mut AppState, line: &str) {
     }
     else if l.starts_with("set-hook ") {
         // Parse set-hook: set-hook [-g] [-a] [-u] hook-name [command]
-        let parts: Vec<&str> = l.split_whitespace().collect();
+        // Use quote-aware parser to handle commands with spaces/quotes properly
+        let parts = crate::commands::parse_command_line(l);
         let mut i = 1;
         let mut unset = false;
         let mut append = false;
